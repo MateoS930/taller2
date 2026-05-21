@@ -2,29 +2,45 @@
 
 int main()
 {
-    float calif[5][3];
-    float prom_est[5] = {0};
-    float prom_asig[3] = {0};
-    float max_est[5], min_est[5];
-    float max_asig[3], min_asig[3];
-    int aprob_asig[3] = {0};
+    int estudiantes;
+    int asignaturas = 3;
 
-    // ==================== INGRESO DE CALIFICACIONES ====================
-    printf("=== INGRESO DE CALIFICACIONES ===\n");
-    for (int i = 0; i < 5; i++)
+    // ==================== COMMIT 1 ====================
+    // Se agrega ingreso dinámico del número de estudiantes
+    // y uso básico de punteros
+
+    printf("Ingrese el numero de estudiantes: ");
+    scanf("%d", &estudiantes);
+
+    // Reserva dinámica de memoria
+    float **calif;
+
+    calif = (float **)malloc(estudiantes * sizeof(float *));
+
+    for (int i = 0; i < estudiantes; i++)
+    {
+        calif[i] = (float *)malloc(asignaturas * sizeof(float));
+    }
+
+    // Ingreso de calificaciones
+    for (int i = 0; i < estudiantes; i++)
     {
         printf("\nEstudiante %d:\n", i + 1);
-        for (int j = 0; j < 3; j++)
+
+        for (int j = 0; j < asignaturas; j++)
         {
-            do
-            {
-                printf("  Asignatura %d (0-10): ", j + 1);
-                scanf("%f", &calif[i][j]);
-                if (calif[i][j] < 0 || calif[i][j] > 10)
-                    printf("    ¡Error! La calificación debe estar entre 0 y 10.\n");
-            } while (calif[i][j] < 0 || calif[i][j] > 10);
+            printf("  Asignatura %d: ", j + 1);
+            scanf("%f", &calif[i][j]);
         }
     }
+
+    // Liberar memoria
+    for (int i = 0; i < estudiantes; i++)
+    {
+        free(calif[i]);
+    }
+
+    free(calif);
 
     // ==================== CÁLCULOS ====================
     // ===Promedio obtenido por estudiante===
