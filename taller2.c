@@ -4,10 +4,9 @@ int main()
 {
     int estudiantes;
     int asignaturas = 3;
+    float *prom_est = (float *)malloc(estudiantes * sizeof(float));
+ float *prom_asig = (float *)malloc(asignaturas * sizeof(float));
 
-    // ==================== COMMIT 1 ====================
-    // Se agrega ingreso dinámico del número de estudiantes
-    // y uso básico de punteros
 
     printf("Ingrese el numero de estudiantes: ");
     scanf("%d", &estudiantes);
@@ -44,22 +43,30 @@ int main()
 
     // ==================== CÁLCULOS ====================
     // ===Promedio obtenido por estudiante===
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < estudiantes; i++)
+{
+    float suma = 0;
+
+    for (int j = 0; j < asignaturas; j++)
     {
-        float suma = 0;
-        for (int j = 0; j < 3; j++)
-            suma += calif[i][j];
-        prom_est[i] = suma / 3;
+        suma += *(*(calif + i) + j);
     }
 
+    *(prom_est + i) = suma / asignaturas;
+}
+
     // Promedio por asignatura
-    for (int j = 0; j < 3; j++)
+    for (int j = 0; j < asignaturas; j++)
+{
+    float suma = 0;
+
+    for (int i = 0; i < estudiantes; i++)
     {
-        float suma = 0;
-        for (int i = 0; i < 5; i++)
-            suma += calif[i][j];
-        prom_asig[j] = suma / 5;
+        suma += *(*(calif + i) + j);
     }
+
+    *(prom_asig + j) = suma / estudiantes;
+}
 
     // Máx y mín obtenidos por estudiante
     for (int i = 0; i < 5; i++)
