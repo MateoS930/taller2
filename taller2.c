@@ -1,83 +1,80 @@
 #include <stdio.h>
+#include <stdlib.h> // Necesario para malloc, calloc y free
 
 int main()
 {
     int estudiantes;
     int asignaturas = 3;
-    float *prom_est = (float *)malloc(estudiantes * sizeof(float));
- float *prom_asig = (float *)malloc(asignaturas * sizeof(float));
-
 
     printf("Ingrese el numero de estudiantes: ");
     scanf("%d", &estudiantes);
 
-    // Reserva dinámica de memoria
-    float **calif;
+    // Reserva dinámica de memoria (DESPUÉS de saber cuántos estudiantes son)
+    float *prom_est = (float *)malloc(estudiantes * sizeof(float));
+    float *prom_asig = (float *)malloc(asignaturas * sizeof(float));
 
-    calif = (float **)malloc(estudiantes * sizeof(float *));
+    // Declaración y reserva para las variables de estadísticas
+    float *max_est = (float *)malloc(estudiantes * sizeof(float));
+    float *min_est = (float *)malloc(estudiantes * sizeof(float));
+    float *max_asig = (float *)malloc(asignaturas * sizeof(float));
+    float *min_asig = (float *)malloc(asignaturas * sizeof(float));
+    int *aprob_asig = (int *)calloc(asignaturas, sizeof(int)); // calloc inicia todo en 0
 
+    // Reserva dinámica para la matriz de calificaciones
+    float **calif = (float **)malloc(estudiantes * sizeof(float *));
     for (int i = 0; i < estudiantes; i++)
     {
-        calif[i] = (float *)malloc(asignaturas * sizeof(float));
+        *(calif + i) = (float *)malloc(asignaturas * sizeof(float));
     }
 
     // Ingreso de calificaciones
     for (int i = 0; i < estudiantes; i++)
     {
         printf("\nEstudiante %d:\n", i + 1);
-
         for (int j = 0; j < asignaturas; j++)
         {
             printf("  Asignatura %d: ", j + 1);
-            scanf("%f", &calif[i][j]);
+            // scanf también puede usar punteros directos
+            scanf("%f", *(calif + i) + j);
         }
-    }
 
-    // Liberar memoria
-    for (int i = 0; i < estudiantes; i++)
-    {
-        free(calif[i]);
     }
-
-    free(calif);
 
     // ==================== CÁLCULOS ====================
-    // ===Promedio obtenido por estudiante===
+
+    // Promedio obtenido por estudiante
     for (int i = 0; i < estudiantes; i++)
-{
-    float suma = 0;
-
-    for (int j = 0; j < asignaturas; j++)
     {
-        suma += *(*(calif + i) + j);
+        float suma = 0;
+        for (int j = 0; j < asignaturas; j++)
+        {
+            suma += *(*(calif + i) + j);
+        }
+        *(prom_est + i) = suma / asignaturas;
     }
-
-    *(prom_est + i) = suma / asignaturas;
-}
 
     // Promedio por asignatura
     for (int j = 0; j < asignaturas; j++)
-{
-    float suma = 0;
-
-    for (int i = 0; i < estudiantes; i++)
     {
-        suma += *(*(calif + i) + j);
+        float suma = 0;
+        for (int i = 0; i < estudiantes; i++)
+        {
+            suma += *(*(calif + i) + j);
+        }
+        *(prom_asig + j) = suma / estudiantes;
     }
 
-    *(prom_asig + j) = suma / estudiantes;
-}
-
-    // Máx y mín obtenidos por estudiante
-    for (int i = 0; i < 5; i++)
+    // Máx y mín obtenidos por estudiante (Con punteros)
+    for (int i = 0; i < estudiantes; i++)
     {
-        max_est[i] = min_est[i] = calif[i][0];
-        for (int j = 1; j < 3; j++)
+        *(max_est + i) = *(*(calif + i) + 0);
+        *(min_est + i) = *(*(calif + i) + 0);
+        for (int j = 1; j < asignaturas; j++)
         {
-            if (calif[i][j] > max_est[i])
-                max_est[i] = calif[i][j];
-            if (calif[i][j] < min_est[i])
-                min_est[i] = calif[i][j];
+            if (*(*(calif + i) + j) > *(max_est + i))
+                *(max_est + i) = *(*(calif + i) + j);
+            if (*(*(calif + i) + j) < *(min_est + i))
+                *(min_est + i) = *(*(calif + i) + j);
         }
     }
 
