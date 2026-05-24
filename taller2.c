@@ -37,7 +37,6 @@ int main()
             // scanf también puede usar punteros directos
             scanf("%f", *(calif + i) + j);
         }
-
     }
 
     // ==================== CÁLCULOS ====================
@@ -78,8 +77,7 @@ int main()
         }
     }
 
-    
-   // Máx y mín por asignatura (Con punteros)
+    // Máx y mín por asignatura (Con punteros)
     for (int j = 0; j < asignaturas; j++)
     {
         *(max_asig + j) = *(*(calif + 0) + j);
@@ -100,16 +98,6 @@ int main()
         {
             if (*(*(calif + i) + j) >= 6)
                 (*(aprob_asig + j))++;
-        }
-    }
-
-    // Aprobados por asignatura
-    for (int j = 0; j < 3; j++)
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            if (calif[i][j] >= 6)
-                aprob_asig[j]++;
         }
     }
 
