@@ -117,25 +117,39 @@ int main()
     printf("\n=== RESULTADOS ===\n");
 
     printf("\nPromedio de calificaciones por estudiante:\n");
-    for (int i = 0; i < 5; i++)
-        printf("  Estudiante %d: %.2f\n", i + 1, prom_est[i]);
+    for (int i = 0; i < estudiantes; i++)
+        printf("  Estudiante %d: %.2f\n", i + 1, *(prom_est + i));
 
     printf("\nPromedio de calificaciones por asignatura:\n");
-    for (int j = 0; j < 3; j++)
-        printf("  Asignatura %d: %.2f\n", j + 1, prom_asig[j]);
+    for (int j = 0; j < asignaturas; j++)
+        printf("  Asignatura %d: %.2f\n", j + 1, *(prom_asig + j));
 
-    printf("\nCalificación más alta y baja por estudiante:\n");
-    for (int i = 0; i < 5; i++)
-        printf("  Estudiante %d → Máx: %.2f  Mín: %.2f\n", i + 1, max_est[i], min_est[i]);
+    printf("\nCalificacion mas alta y baja por estudiante:\n");
+    for (int i = 0; i < estudiantes; i++)
+        printf("  Estudiante %d -> Max: %.2f  Min: %.2f\n", i + 1, *(max_est + i), *(min_est + i));
 
-    printf("\nCalificación más alta y baja por asignatura:\n");
-    for (int j = 0; j < 3; j++)
-        printf("  Asignatura %d → Máx: %.2f  Mín: %.2f\n", j + 1, max_asig[j], min_asig[j]);
+    printf("\nCalificacion mas alta y baja por asignatura:\n");
+    for (int j = 0; j < asignaturas; j++)
+        printf("  Asignatura %d -> Max: %.2f  Min: %.2f\n", j + 1, *(max_asig + j), *(min_asig + j));
 
-    printf("\nNúmero de estudiantes aprobados y reprobados por asignatura:\n");
-    for (int j = 0; j < 3; j++)
-        printf("  Asignatura %d → Aprobados: %d  Reprobados: %d\n",
-               j + 1, aprob_asig[j], 5 - aprob_asig[j]);
+    printf("\nNumero de estudiantes aprobados y reprobados por asignatura:\n");
+    for (int j = 0; j < asignaturas; j++)
+        printf("  Asignatura %d -> Aprobados: %d  Reprobados: %d\n",
+               j + 1, *(aprob_asig + j), estudiantes - *(aprob_asig + j));
+
+    // Liberar toda la memoria AL FINAL del programa
+    for (int i = 0; i < estudiantes; i++)
+    {
+        free(*(calif + i));
+    }
+    free(calif);
+    free(prom_est);
+    free(prom_asig);
+    free(max_est);
+    free(min_est);
+    free(max_asig);
+    free(min_asig);
+    free(aprob_asig);
 
     return 0;
 }
