@@ -78,16 +78,28 @@ int main()
         }
     }
 
-    // Máx y mín por asignatura
-    for (int j = 0; j < 3; j++)
+    
+   // Máx y mín por asignatura (Con punteros)
+    for (int j = 0; j < asignaturas; j++)
     {
-        max_asig[j] = min_asig[j] = calif[0][j];
-        for (int i = 1; i < 5; i++)
+        *(max_asig + j) = *(*(calif + 0) + j);
+        *(min_asig + j) = *(*(calif + 0) + j);
+        for (int i = 1; i < estudiantes; i++)
         {
-            if (calif[i][j] > max_asig[j])
-                max_asig[j] = calif[i][j];
-            if (calif[i][j] < min_asig[j])
-                min_asig[j] = calif[i][j];
+            if (*(*(calif + i) + j) > *(max_asig + j))
+                *(max_asig + j) = *(*(calif + i) + j);
+            if (*(*(calif + i) + j) < *(min_asig + j))
+                *(min_asig + j) = *(*(calif + i) + j);
+        }
+    }
+
+    // Aprobados por asignatura (Con punteros)
+    for (int j = 0; j < asignaturas; j++)
+    {
+        for (int i = 0; i < estudiantes; i++)
+        {
+            if (*(*(calif + i) + j) >= 6)
+                (*(aprob_asig + j))++;
         }
     }
 
